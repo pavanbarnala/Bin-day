@@ -151,6 +151,33 @@
   .bin-footer { margin-top: 1.5rem; font-size: 0.62rem; color: #3a3f52; text-align: center; letter-spacing: 0.06em; }
   .bin-footer a { color: #4a5168; text-decoration: none; }
 
+  /* ── COUNTDOWN PAGE ── */
+  .countdown-card { text-align: center; }
+  .cd-intro { font-size: 0.7rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.4rem; }
+  .cd-tagline { font-family: 'DM Serif Display', serif; font-size: 1.35rem; color: var(--text); margin-bottom: 1.8rem; line-height: 1.3; }
+  .cd-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 0.6rem; margin-bottom: 1.2rem; }
+  .cd-unit { background: rgba(229,85,85,0.1); border: 1px solid rgba(229,85,85,0.25); border-radius: 12px; padding: 0.6rem 0.3rem; }
+  .cd-num { font-size: 1.6rem; font-weight: 500; color: #e55; line-height: 1; }
+  .cd-lbl { font-size: 0.55rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 0.2rem; }
+  .cd-seconds-row { margin-bottom: 1.2rem; }
+  .cd-sec-num { font-size: 2.2rem; font-weight: 500; color: #e2c97e; font-variant-numeric: tabular-nums; }
+  .cd-sec-label { font-size: 0.65rem; color: var(--muted); display: block; margin-top: 0.1rem; letter-spacing: 0.05em; }
+  .cd-footer { font-size: 0.68rem; color: var(--muted); line-height: 1.7; padding-top: 1rem; border-top: 1px solid var(--border); }
+
+  /* ── QUOTE PAGE ── */
+  .quote-card { text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 320px; }
+  .quote-day { font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.5rem; }
+  .quote-text {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.15rem, 4vw, 1.5rem);
+    line-height: 1.5;
+    background: linear-gradient(135deg, #6384c7, #38a169, #e2c97e);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1.5rem;
+  }
+  .quote-author { font-size: 0.72rem; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; }
+
   @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 </style>
 </head>
@@ -159,10 +186,8 @@
 <!-- TAB BAR -->
 <nav class="tab-bar">
   <div class="tab active" onclick="switchTab('binday')">Bin Day</div>
-  <div class="tab" onclick="switchTab('reyan')">Reyan</div>
-  <div class="tab" onclick="switchTab('kaira')">Kaira</div>
-  <div class="tab" onclick="switchTab('karuna')">Karuna</div>
-  <div class="tab" onclick="switchTab('pavan')">Pavan</div>
+  <div class="tab" onclick="switchTab('countdown')">Countdown</div>
+  <div class="tab" onclick="switchTab('quote')">Quote</div>
 </nav>
 
 <!-- PAGE: BIN DAY -->
@@ -179,41 +204,28 @@
   </div>
 </div>
 
-<!-- PAGE: REYAN -->
-<div class="page" id="page-reyan">
-  <div class="card">
-    <div class="card-top-bar"></div>
-    <div class="page-name"><em>Reyan</em></div>
-    <div class="event-list" id="events-reyan"></div>
-  </div>
-</div>
-
-<!-- PAGE: KAIRA -->
-<div class="page" id="page-kaira">
-  <div class="card">
-    <div class="card-top-bar"></div>
-    <div class="page-name"><em>Kaira</em></div>
-    <div class="event-list" id="events-kaira"></div>
-  </div>
-</div>
-
-<!-- PAGE: KARUNA -->
-<div class="page" id="page-karuna">
-  <div class="card">
-    <div class="card-top-bar"></div>
-    <div class="placeholder">
-      <div class="placeholder-name"><em>Karuna</em></div>
-      <div class="placeholder-msg">Content coming soon</div>
+<!-- PAGE: COUNTDOWN -->
+<div class="page" id="page-countdown">
+  <div class="card countdown-card">
+    <div class="card-top-bar" style="background:linear-gradient(90deg,#e55,#e2c97e);opacity:0.7"></div>
+    <div class="cd-intro">Pavan, you absolute legend&hellip;</div>
+    <div class="cd-tagline" id="cd-tagline"></div>
+    <div class="cd-grid" id="cd-grid"></div>
+    <div class="cd-seconds-row">
+      <span class="cd-sec-num" id="cd-sec"></span>
+      <span class="cd-sec-label">seconds tick-tocking away&nbsp;⏳</span>
     </div>
+    <div class="cd-footer" id="cd-footer"></div>
   </div>
 </div>
 
-<!-- PAGE: PAVAN -->
-<div class="page" id="page-pavan">
-  <div class="card">
-    <div class="card-top-bar"></div>
-    <div class="page-name"><em>Pavan</em></div>
-    <div class="event-list" id="events-pavan"></div>
+<!-- PAGE: QUOTE -->
+<div class="page" id="page-quote">
+  <div class="card quote-card">
+    <div class="card-top-bar" style="background:linear-gradient(90deg,#6384c7,#38a169,#e2c97e);opacity:0.8"></div>
+    <div class="quote-day" id="quote-day"></div>
+    <div class="quote-text" id="quote-text"></div>
+    <div class="quote-author" id="quote-author"></div>
   </div>
 </div>
 
@@ -224,6 +236,7 @@
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.querySelector(`[onclick="switchTab('${id}')"]`).classList.add('active');
     document.getElementById('page-' + id).classList.add('active');
+    if (id === 'countdown') startCountdown();
   }
 
   // ── BIN DAY LOGIC ─────────────────────────────────────────────────────────
@@ -267,57 +280,349 @@
   }
   renderBinDay();
 
-  // ── EVENTS ──────────────────────────────────────────────────────────────
-  const KIDS_EVENTS = [
-    { date: '2026-05-08', icon: '🧦', name: 'Crazy Sock Day' },
-    { date: '2026-06-12', icon: '💇', name: 'Crazy Hair Day' },
-    { date: '2026-06-27', icon: '🎪', name: 'Summer Fair' },
-    { date: '2026-10-26', icon: '🦷', name: 'Dental Appointment' },
+  // ── COUNTDOWN ─────────────────────────────────────────────────────────────
+  const DOB = new Date('1983-11-04T00:00:00');
+  const END = new Date('2063-11-04T00:00:00'); // 80th birthday
+
+  const TAGLINES = [
+    "You have precisely this much time left before the universe reclaims you. Spend it wisely. Or don't. You won't.",
+    "The clock is ticking, mate. Every second you read this is a second you'll never get back. Enjoy!",
+    "Somewhere between your first nappy and your last, lies this countdown. Make it count.",
+    "You asked for dramatic. Here it is. Tick tock, Pavan. Tick. Tock.",
+    "Look on the bright side — you still have more days left than you've wasted on bad meetings.",
   ];
 
-  const PAVAN_EVENTS = [
-    { date: '2026-05-15', icon: '🚫', name: 'Cancel Bupa' },
-    { date: '2026-05-29', icon: '💼', name: 'Brookson non-trading reduced fee' },
-    { date: '2026-05-31', icon: '💳', name: 'Santander £48 cashback' },
-    { date: '2026-06-02', icon: '✅', name: 'Check Aviva salary sacrifice credit' },
-    { date: '2026-06-28', icon: '🏏', name: "Lord's Cricket — World Cup" },
-  ];
-
-  function renderEvents(containerId, events) {
-    const today = new Date(); today.setHours(0,0,0,0);
-    const el = document.getElementById(containerId);
-    if (!el) return;
-    let html = '';
-    events.forEach(e => {
-      const d = new Date(e.date + 'T00:00:00');
-      const diff = Math.round((d - today) / (24*60*60*1000));
-      const dateStr = d.toLocaleDateString('en-GB', {day:'numeric', month:'long', year:'numeric'});
-      let cls = '';
-      let counter = '';
-      if (diff < 0) {
-        cls = 'past';
-        counter = `<div class="event-counter"><div class="days">&mdash;</div><div class="days-label">passed</div></div>`;
-      } else if (diff === 0) {
-        cls = 'today';
-        counter = `<div class="event-counter today-label"><div class="days">Today!</div></div>`;
-      } else {
-        counter = `<div class="event-counter"><div class="days">${diff}</div><div class="days-label">day${diff!==1?'s':''}</div></div>`;
-      }
-      html += `<div class="event-item ${cls}">
-        <span class="event-icon">${e.icon}</span>
-        <div class="event-info">
-          <div class="event-name">${e.name}</div>
-          <div class="event-date">${dateStr}</div>
-        </div>
-        ${counter}
-      </div>`;
-    });
-    el.innerHTML = html;
+  function pickTagline() {
+    const day = Math.floor(Date.now() / 86400000);
+    return TAGLINES[day % TAGLINES.length];
   }
 
-  renderEvents('events-reyan', KIDS_EVENTS);
-  renderEvents('events-kaira', KIDS_EVENTS);
-  renderEvents('events-pavan', PAVAN_EVENTS);
+  let cdInterval = null;
+
+  function startCountdown() {
+    document.getElementById('cd-tagline').textContent = pickTagline();
+    if (cdInterval) clearInterval(cdInterval);
+    tickCountdown();
+    cdInterval = setInterval(tickCountdown, 1000);
+  }
+
+  function tickCountdown() {
+    const now = new Date();
+    const msLeft = END - now;
+    if (msLeft <= 0) {
+      document.getElementById('cd-grid').innerHTML = '<div style="color:#e55;font-size:1.2rem">Time\'s up, mate. 👋</div>';
+      clearInterval(cdInterval);
+      return;
+    }
+
+    const totalSecs = Math.floor(msLeft / 1000);
+    const secs   = totalSecs % 60;
+    const mins   = Math.floor(totalSecs / 60) % 60;
+    const hours  = Math.floor(totalSecs / 3600) % 24;
+    const days   = Math.floor(totalSecs / 86400) % 365;
+    const months = Math.floor(totalSecs / (86400 * 30.4375)) % 12;
+    const years  = Math.floor(totalSecs / (86400 * 365.25));
+
+    const units = [
+      { n: years,  l: 'Years'   },
+      { n: months, l: 'Months'  },
+      { n: days,   l: 'Days'    },
+      { n: hours,  l: 'Hours'   },
+    ];
+
+    document.getElementById('cd-grid').innerHTML = units.map(u =>
+      `<div class="cd-unit"><div class="cd-num">${String(u.n).padStart(2,'0')}</div><div class="cd-lbl">${u.l}</div></div>`
+    ).join('');
+
+    document.getElementById('cd-sec').textContent = String(secs).padStart(2,'0');
+
+    const age = Math.floor((now - DOB) / (86400 * 365.25 * 1000));
+    document.getElementById('cd-footer').innerHTML =
+      `You are <strong>${age}</strong> years old. Assuming you live to 80, you have used up <strong>${Math.round((now-DOB)/(END-DOB)*100)}%</strong> of your time.<br>No pressure. Genuinely. Well&hellip; maybe a little.`;
+  }
+
+  // ── QUOTES ─────────────────────────────────────────────────────────────────
+  const QUOTES = [
+    ["The only way to do great work is to love what you do.", "Steve Jobs"],
+    ["In the middle of every difficulty lies opportunity.", "Albert Einstein"],
+    ["It does not matter how slowly you go as long as you do not stop.", "Confucius"],
+    ["Life is what happens when you're busy making other plans.", "John Lennon"],
+    ["The future belongs to those who believe in the beauty of their dreams.", "Eleanor Roosevelt"],
+    ["Success is not final, failure is not fatal: it is the courage to continue that counts.", "Winston Churchill"],
+    ["Spread love everywhere you go. Let no one ever come to you without leaving happier.", "Mother Teresa"],
+    ["When you reach the end of your rope, tie a knot in it and hang on.", "Franklin D. Roosevelt"],
+    ["Always remember that you are absolutely unique. Just like everyone else.", "Margaret Mead"],
+    ["Don't judge each day by the harvest you reap but by the seeds that you plant.", "Robert Louis Stevenson"],
+    ["The best time to plant a tree was 20 years ago. The second best time is now.", "Chinese Proverb"],
+    ["An unexamined life is not worth living.", "Socrates"],
+    ["Spread love everywhere you go.", "Mother Teresa"],
+    ["When you arise in the morning think of what a privilege it is to be alive.", "Marcus Aurelius"],
+    ["He who has a why to live can bear almost any how.", "Friedrich Nietzsche"],
+    ["First, have a definite, clear practical ideal; a goal, an objective.", "Aristotle"],
+    ["The unexamined life is not worth living.", "Socrates"],
+    ["Knowing yourself is the beginning of all wisdom.", "Aristotle"],
+    ["The only true wisdom is in knowing you know nothing.", "Socrates"],
+    ["Be the change you wish to see in the world.", "Mahatma Gandhi"],
+    ["In three words I can sum up everything I've learned about life: it goes on.", "Robert Frost"],
+    ["To be yourself in a world that is constantly trying to make you something else is the greatest accomplishment.", "Ralph Waldo Emerson"],
+    ["Do not go where the path may lead, go instead where there is no path and leave a trail.", "Ralph Waldo Emerson"],
+    ["Whatever you are, be a good one.", "Abraham Lincoln"],
+    ["Do one thing every day that scares you.", "Eleanor Roosevelt"],
+    ["Well-behaved women seldom make history.", "Laurel Thatcher Ulrich"],
+    ["The most wasted of days is one without laughter.", "Nicolas Chamfort"],
+    ["Believe you can and you're halfway there.", "Theodore Roosevelt"],
+    ["It's not whether you get knocked down, it's whether you get up.", "Vince Lombardi"],
+    ["Start where you are. Use what you have. Do what you can.", "Arthur Ashe"],
+    ["You miss 100% of the shots you don't take.", "Wayne Gretzky"],
+    ["The greatest glory in living lies not in never falling, but in rising every time we fall.", "Nelson Mandela"],
+    ["Life is not measured by the number of breaths we take, but by the moments that take our breath away.", "Maya Angelou"],
+    ["If you look at what you have in life, you'll always have more.", "Oprah Winfrey"],
+    ["If you want to lift yourself up, lift up someone else.", "Booker T. Washington"],
+    ["Darkness cannot drive out darkness; only light can do that.", "Martin Luther King Jr."],
+    ["In the end, it's not the years in your life that count. It's the life in your years.", "Abraham Lincoln"],
+    ["It is during our darkest moments that we must focus to see the light.", "Aristotle"],
+    ["Do not go gentle into that good night.", "Dylan Thomas"],
+    ["We know what we are, but know not what we may be.", "William Shakespeare"],
+    ["All that glitters is not gold.", "William Shakespeare"],
+    ["The lady doth protest too much, methinks.", "William Shakespeare"],
+    ["To thine own self be true.", "William Shakespeare"],
+    ["Give every man thy ear, but few thy voice.", "William Shakespeare"],
+    ["We are all faced with a series of great opportunities brilliantly disguised as impossible situations.", "Chuck Swindoll"],
+    ["Don't cry because it's over, smile because it happened.", "Dr. Seuss"],
+    ["You have brains in your head. You have feet in your shoes.", "Dr. Seuss"],
+    ["Today you are you, that is truer than true.", "Dr. Seuss"],
+    ["The more that you read, the more things you will know.", "Dr. Seuss"],
+    ["Unless someone like you cares a whole awful lot, nothing is going to get better. It's not.", "Dr. Seuss"],
+    ["Two roads diverged in a wood, and I took the one less travelled by.", "Robert Frost"],
+    ["No man is an island, entire of itself.", "John Donne"],
+    ["To be, or not to be, that is the question.", "William Shakespeare"],
+    ["I think, therefore I am.", "René Descartes"],
+    ["The only thing we have to fear is fear itself.", "Franklin D. Roosevelt"],
+    ["Ask not what your country can do for you, ask what you can do for your country.", "John F. Kennedy"],
+    ["That's one small step for man, one giant leap for mankind.", "Neil Armstrong"],
+    ["I have a dream that one day this nation will rise up.", "Martin Luther King Jr."],
+    ["Float like a butterfly, sting like a bee.", "Muhammad Ali"],
+    ["I am the greatest, I said that even before I knew I was.", "Muhammad Ali"],
+    ["Impossible is nothing.", "Muhammad Ali"],
+    ["Service to others is the rent you pay for your room here on earth.", "Muhammad Ali"],
+    ["Champions aren't made in gyms.", "Muhammad Ali"],
+    ["The secret of getting ahead is getting started.", "Mark Twain"],
+    ["All you need in this life is ignorance and confidence, and then success is sure.", "Mark Twain"],
+    ["It's not the size of the dog in the fight, it's the size of the fight in the dog.", "Mark Twain"],
+    ["The man who does not read has no advantage over the man who cannot read.", "Mark Twain"],
+    ["A person who won't read has no advantage over one who can't read.", "Mark Twain"],
+    ["Keep away from people who try to belittle your ambitions.", "Mark Twain"],
+    ["Courage is resistance to fear, mastery of fear — not absence of fear.", "Mark Twain"],
+    ["Twenty years from now you will be more disappointed by the things you didn't do.", "Mark Twain"],
+    ["The two most important days in your life are the day you are born and the day you find out why.", "Mark Twain"],
+    ["Education is what remains after one has forgotten what one has learned in school.", "Albert Einstein"],
+    ["Imagination is more important than knowledge.", "Albert Einstein"],
+    ["Logic will get you from A to B. Imagination will take you everywhere.", "Albert Einstein"],
+    ["Strive not to be a success, but rather to be of value.", "Albert Einstein"],
+    ["A person who never made a mistake never tried anything new.", "Albert Einstein"],
+    ["Great spirits have always encountered violent opposition from mediocre minds.", "Albert Einstein"],
+    ["Life is like riding a bicycle. To keep your balance, you must keep moving.", "Albert Einstein"],
+    ["We cannot solve our problems with the same thinking we used when we created them.", "Albert Einstein"],
+    ["Once you stop learning, you start dying.", "Albert Einstein"],
+    ["The measure of intelligence is the ability to change.", "Albert Einstein"],
+    ["It has become appallingly obvious that our technology has exceeded our humanity.", "Albert Einstein"],
+    ["Science without religion is lame, religion without science is blind.", "Albert Einstein"],
+    ["Not everything that can be counted counts, and not everything that counts can be counted.", "Albert Einstein"],
+    ["Few people are capable of expressing with equanimity opinions which differ from the prejudices of their social environment.", "Albert Einstein"],
+    ["Peace cannot be kept by force; it can only be achieved by understanding.", "Albert Einstein"],
+    ["The only source of knowledge is experience.", "Albert Einstein"],
+    ["Everything should be made as simple as possible, but not simpler.", "Albert Einstein"],
+    ["If you can't explain it simply, you don't understand it well enough.", "Albert Einstein"],
+    ["The important thing is not to stop questioning.", "Albert Einstein"],
+    ["A ship in harbour is safe, but that is not what ships are for.", "John A. Shedd"],
+    ["Not all those who wander are lost.", "J.R.R. Tolkien"],
+    ["Even the smallest person can change the course of the future.", "J.R.R. Tolkien"],
+    ["All we have to decide is what to do with the time that is given us.", "J.R.R. Tolkien"],
+    ["It's a dangerous business, going out your door.", "J.R.R. Tolkien"],
+    ["I am not afraid of storms, for I am learning how to sail my ship.", "Louisa May Alcott"],
+    ["You can't use up creativity. The more you use, the more you have.", "Maya Angelou"],
+    ["I've learned that people will forget what you said, people will forget what you did, but people will never forget how you made them feel.", "Maya Angelou"],
+    ["Nothing will work unless you do.", "Maya Angelou"],
+    ["We may encounter many defeats but we must not be defeated.", "Maya Angelou"],
+    ["My mission in life is not merely to survive, but to thrive.", "Maya Angelou"],
+    ["Success is liking yourself, liking what you do, and liking how you do it.", "Maya Angelou"],
+    ["Courage is the most important of all the virtues because without courage, you can't practice any other virtue consistently.", "Maya Angelou"],
+    ["There is no greater agony than bearing an untold story inside you.", "Maya Angelou"],
+    ["Try to be a rainbow in someone else's cloud.", "Maya Angelou"],
+    ["I sustain myself with the love of family.", "Maya Angelou"],
+    ["I am a feminist. I've been female for a long time now.", "Maya Angelou"],
+    ["Nothing is impossible, the word itself says I'm possible.", "Audrey Hepburn"],
+    ["The most important thing is to enjoy your life — to be happy — it's all that matters.", "Audrey Hepburn"],
+    ["I believe in pink.", "Audrey Hepburn"],
+    ["The beauty of a woman is not in the clothes she wears.", "Audrey Hepburn"],
+    ["The most important thing is to enjoy your life.", "Audrey Hepburn"],
+    ["I never think of the future. It comes soon enough.", "Albert Einstein"],
+    ["Reality is merely an illusion, albeit a very persistent one.", "Albert Einstein"],
+    ["Weakness of attitude becomes weakness of character.", "Albert Einstein"],
+    ["I speak to everyone in the same way, whether he is the garbage man or the president of the university.", "Albert Einstein"],
+    ["The true sign of intelligence is not knowledge but imagination.", "Albert Einstein"],
+    ["Whoever is happy will make others happy.", "Anne Frank"],
+    ["How wonderful it is that nobody need wait a single moment before starting to improve the world.", "Anne Frank"],
+    ["Despite everything, I believe that people are really good at heart.", "Anne Frank"],
+    ["Think of all the beauty still left around you and be happy.", "Anne Frank"],
+    ["The power of imagination makes us infinite.", "John Muir"],
+    ["In every walk with nature, one receives far more than he seeks.", "John Muir"],
+    ["The clearest way into the Universe is through a forest wilderness.", "John Muir"],
+    ["Thousands of tired, nerve-shaken, over-civilized people are beginning to find out that going to the mountains is going home.", "John Muir"],
+    ["The mountains are calling and I must go.", "John Muir"],
+    ["Of all the paths you take in life, make sure a few of them are dirt.", "John Muir"],
+    ["Not all who wander are lost.", "J.R.R. Tolkien"],
+    ["I would rather die a meaningful death than to live a meaningless life.", "Corazon Aquino"],
+    ["The most common way people give up their power is by thinking they don't have any.", "Alice Walker"],
+    ["The most courageous act is still to think for yourself. Aloud.", "Coco Chanel"],
+    ["In order to be irreplaceable, one must always be different.", "Coco Chanel"],
+    ["Don't spend time beating on a wall, hoping to transform it into a door.", "Coco Chanel"],
+    ["A girl should be two things: classy and fabulous.", "Coco Chanel"],
+    ["Fashion fades, only style remains the same.", "Coco Chanel"],
+    ["Hard work spotlights the character of people: some turn up their sleeves, some turn up their noses, and some don't turn up at all.", "Sam Ewing"],
+    ["Talent wins games, but teamwork and intelligence win championships.", "Michael Jordan"],
+    ["I can accept failure, everyone fails at something. But I can't accept not trying.", "Michael Jordan"],
+    ["Some people want it to happen, some wish it would happen, others make it happen.", "Michael Jordan"],
+    ["If you do the work you get rewarded. There are no shortcuts in life.", "Michael Jordan"],
+    ["My attitude is that if you push me towards something that you think is a weakness, then I will turn that perceived weakness into a strength.", "Michael Jordan"],
+    ["Always turn a negative situation into a positive situation.", "Michael Jordan"],
+    ["Obstacles are those frightful things you see when you take your eyes off your goal.", "Henry Ford"],
+    ["Whether you think you can, or you think you can't — you're right.", "Henry Ford"],
+    ["Anyone who stops learning is old, whether at twenty or eighty.", "Henry Ford"],
+    ["If everyone is moving forward together, then success takes care of itself.", "Henry Ford"],
+    ["Vision without execution is just hallucination.", "Henry Ford"],
+    ["Coming together is a beginning; keeping together is progress; working together is success.", "Henry Ford"],
+    ["Quality means doing it right when no one is looking.", "Henry Ford"],
+    ["Don't find fault, find a remedy.", "Henry Ford"],
+    ["Nothing is particularly hard if you divide it into small jobs.", "Henry Ford"],
+    ["Failure is simply the opportunity to begin again, this time more intelligently.", "Henry Ford"],
+    ["You can't build a reputation on what you are going to do.", "Henry Ford"],
+    ["There is no man living who isn't capable of doing more than he thinks he can do.", "Henry Ford"],
+    ["A business that makes nothing but money is a poor business.", "Henry Ford"],
+    ["The whole secret of a successful life is to find out what is one's destiny to do, and then do it.", "Henry Ford"],
+    ["I am looking for a lot of men who have an infinite capacity to not know what can't be done.", "Henry Ford"],
+    ["It has been my observation that most people get ahead during the time that others waste.", "Henry Ford"],
+    ["Thinking is the hardest work there is, which is probably the reason so few engage in it.", "Henry Ford"],
+    ["It's always too soon to quit.", "Norman Vincent Peale"],
+    ["Change your thoughts and you change your world.", "Norman Vincent Peale"],
+    ["Believe in yourself! Have faith in your abilities!", "Norman Vincent Peale"],
+    ["Empty pockets never held anyone back. Only empty heads and empty hearts can do that.", "Norman Vincent Peale"],
+    ["Stand up to your obstacles and do something about them.", "Norman Vincent Peale"],
+    ["The more you lose yourself in something bigger than yourself, the more energy you will have.", "Norman Vincent Peale"],
+    ["It's not who you are that holds you back, it's who you think you're not.", "Denis Waitley"],
+    ["Time is the coin of your life. It is the only coin you have, and only you can determine how it will be spent.", "Carl Sandburg"],
+    ["Nothing in life is to be feared, it is only to be understood.", "Marie Curie"],
+    ["I was taught that the way of progress was neither swift nor easy.", "Marie Curie"],
+    ["Be less curious about people and more curious about ideas.", "Marie Curie"],
+    ["I am among those who think that science has great beauty.", "Marie Curie"],
+    ["One never notices what has been done; one can only see what remains to be done.", "Marie Curie"],
+    ["We must believe that we are gifted for something and that this thing must be attained.", "Marie Curie"],
+    ["Life need not be easy, provided only that it is not empty.", "Marie Curie"],
+    ["First they ignore you, then they laugh at you, then they fight you, then you win.", "Mahatma Gandhi"],
+    ["The weak can never forgive. Forgiveness is the attribute of the strong.", "Mahatma Gandhi"],
+    ["An eye for an eye only ends up making the whole world blind.", "Mahatma Gandhi"],
+    ["Happiness is when what you think, what you say, and what you do are in harmony.", "Mahatma Gandhi"],
+    ["The best way to find yourself is to lose yourself in the service of others.", "Mahatma Gandhi"],
+    ["You must not lose faith in humanity.", "Mahatma Gandhi"],
+    ["A man is but the product of his thoughts; what he thinks, he becomes.", "Mahatma Gandhi"],
+    ["Live as if you were to die tomorrow. Learn as if you were to live forever.", "Mahatma Gandhi"],
+    ["Where there is love there is life.", "Mahatma Gandhi"],
+    ["In a gentle way, you can shake the world.", "Mahatma Gandhi"],
+    ["The future depends on what you do today.", "Mahatma Gandhi"],
+    ["It always seems impossible until it's done.", "Nelson Mandela"],
+    ["Education is the most powerful weapon which you can use to change the world.", "Nelson Mandela"],
+    ["I learned that courage was not the absence of fear, but the triumph over it.", "Nelson Mandela"],
+    ["A winner is a dreamer who never gives up.", "Nelson Mandela"],
+    ["If you talk to a man in a language he understands, that goes to his head. If you talk to him in his language, that goes to his heart.", "Nelson Mandela"],
+    ["Do not judge me by my successes, judge me by how many times I fell down and got back up again.", "Nelson Mandela"],
+    ["Real leaders must be ready to sacrifice all for the freedom of their people.", "Nelson Mandela"],
+    ["After climbing a great hill, one only finds that there are many more hills to climb.", "Nelson Mandela"],
+    ["I am not a saint, unless you think of a saint as a sinner who keeps on trying.", "Nelson Mandela"],
+    ["Resentment is like drinking poison and then hoping it will kill your enemies.", "Nelson Mandela"],
+    ["Difficulties break some men but make others.", "Nelson Mandela"],
+    ["Lead from the back — and let others believe they are in front.", "Nelson Mandela"],
+    ["For to be free is not merely to cast off one's chains, but to live in a way that respects and enhances the freedom of others.", "Nelson Mandela"],
+    ["There can be no keener revelation of a society's soul than the way in which it treats its children.", "Nelson Mandela"],
+    ["Action is the foundational key to all success.", "Pablo Picasso"],
+    ["Everything you can imagine is real.", "Pablo Picasso"],
+    ["Every child is an artist. The problem is how to remain an artist once we grow up.", "Pablo Picasso"],
+    ["Our goals can only be reached through a vehicle of a plan, in which we must fervently believe, and upon which we must vigorously act.", "Pablo Picasso"],
+    ["The meaning of life is to find your gift. The purpose of life is to give it away.", "Pablo Picasso"],
+    ["The purpose of art is washing the dust of daily life off our souls.", "Pablo Picasso"],
+    ["Inspiration exists, but it has to find you working.", "Pablo Picasso"],
+    ["Only put off until tomorrow what you are willing to die having left undone.", "Pablo Picasso"],
+    ["I am always doing that which I cannot do, in order that I may learn how to do it.", "Pablo Picasso"],
+    ["We don't grow older, we grow riper.", "Pablo Picasso"],
+    ["Youth has no age.", "Pablo Picasso"],
+    ["Bad artists copy. Good artists steal.", "Pablo Picasso"],
+    ["Others have seen what is and asked why. I have seen what could be and asked why not.", "Pablo Picasso"],
+    ["I'd rather regret the things I've done than regret the things I haven't done.", "Lucille Ball"],
+    ["Love yourself first and everything else falls into line.", "Lucille Ball"],
+    ["One of the things I learned the hard way was that it doesn't pay to get discouraged.", "Lucille Ball"],
+    ["Ability is of little account without opportunity.", "Napoleon Bonaparte"],
+    ["Impossible is a word found only in the dictionary of fools.", "Napoleon Bonaparte"],
+    ["A leader is a dealer in hope.", "Napoleon Bonaparte"],
+    ["Courage is like love; it must have hope for nourishment.", "Napoleon Bonaparte"],
+    ["Never interrupt your enemy when he is making a mistake.", "Napoleon Bonaparte"],
+    ["The secret of getting things done is to act.", "Dante Alighieri"],
+    ["From a small seed a mighty trunk may grow.", "Aeschylus"],
+    ["We are what we repeatedly do. Excellence, then, is not an act but a habit.", "Aristotle"],
+    ["Pleasure in the job puts perfection in the work.", "Aristotle"],
+    ["It is the mark of an educated mind to be able to entertain a thought without accepting it.", "Aristotle"],
+    ["The whole is greater than the sum of its parts.", "Aristotle"],
+    ["Educating the mind without educating the heart is no education at all.", "Aristotle"],
+    ["In all things of nature there is something of the marvellous.", "Aristotle"],
+    ["The roots of education are bitter, but the fruit is sweet.", "Aristotle"],
+    ["What is a friend? A single soul dwelling in two bodies.", "Aristotle"],
+    ["Hope is a waking dream.", "Aristotle"],
+    ["Youth is easily deceived because it is quick to hope.", "Aristotle"],
+    ["The energy of the mind is the essence of life.", "Aristotle"],
+    ["Patience is bitter, but its fruit is sweet.", "Jean-Jacques Rousseau"],
+    ["Man is born free, and everywhere he is in chains.", "Jean-Jacques Rousseau"],
+    ["The world of reality has its limits; the world of imagination is boundless.", "Jean-Jacques Rousseau"],
+    ["Every person has his own way.", "Jean-Jacques Rousseau"],
+    ["Gratitude is the memory of the heart.", "Jean Baptiste Massieu"],
+    ["Real generosity toward the future lies in giving all to the present.", "Albert Camus"],
+    ["In the depth of winter, I finally learned that within me there lay an invincible summer.", "Albert Camus"],
+    ["Don't walk behind me; I may not lead. Don't walk in front of me; I may not follow. Just walk beside me and be my friend.", "Albert Camus"],
+    ["You will never be happy if you continue to search for what happiness consists of.", "Albert Camus"],
+    ["The only way to deal with an unfree world is to become so absolutely free that your very existence is an act of rebellion.", "Albert Camus"],
+    ["Should I kill myself, or have a cup of coffee?", "Albert Camus"],
+    ["But in the end one needs more courage to live than to kill himself.", "Albert Camus"],
+    ["In order to understand the world, one has to turn away from it on occasion.", "Albert Camus"],
+    ["Freedom is nothing but a chance to be better.", "Albert Camus"],
+    ["To be happy, we must not be too concerned with others.", "Albert Camus"],
+    ["Once you make a decision, the universe conspires to make it happen.", "Ralph Waldo Emerson"],
+    ["What lies behind you and what lies in front of you, pales in comparison to what lies inside of you.", "Ralph Waldo Emerson"],
+    ["Nothing great was ever achieved without enthusiasm.", "Ralph Waldo Emerson"],
+    ["For every minute you are angry you lose sixty seconds of happiness.", "Ralph Waldo Emerson"],
+    ["The creation of something new is not accomplished by the intellect but by the play instinct.", "Carl Jung"],
+    ["Your vision will become clear only when you can look into your own heart.", "Carl Jung"],
+    ["I am not what happened to me, I am what I choose to become.", "Carl Jung"],
+    ["The privilege of a lifetime is to become who you truly are.", "Carl Jung"],
+    ["Thinking is difficult, that's why most people judge.", "Carl Jung"],
+    ["We cannot change anything unless we accept it.", "Carl Jung"],
+    ["Who looks outside, dreams; who looks inside, awakes.", "Carl Jung"],
+    ["Until you make the unconscious conscious, it will direct your life and you will call it fate.", "Carl Jung"],
+    ["Loneliness does not come from having no people around you, but from being unable to communicate the things that seem important to you.", "Carl Jung"],
+    ["The greatest tragedy of the family is the unlived lives of the parents.", "Carl Jung"],
+    ["Show me a sane man and I will cure him for you.", "Carl Jung"],
+    ["Life really does begin at forty. Up until then, you are just doing research.", "Carl Jung"],
+    ["The most terrifying thing is to accept oneself completely.", "Carl Jung"],
+  ];
+
+  function renderQuote() {
+    const now = new Date();
+    const startOfYear = new Date(now.getFullYear(), 0, 0);
+    const dayOfYear = Math.floor((now - startOfYear) / 86400000);
+    const q = QUOTES[dayOfYear % QUOTES.length];
+    const dateStr = now.toLocaleDateString('en-GB', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
+    document.getElementById('quote-day').textContent = dateStr;
+    document.getElementById('quote-text').innerHTML = '\u201c' + q[0] + '\u201d';
+    document.getElementById('quote-author').textContent = '\u2014 ' + q[1];
+  }
+
+  renderQuote();
 </script>
 </body>
 </html>
